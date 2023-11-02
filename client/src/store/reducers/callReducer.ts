@@ -1,5 +1,20 @@
 import * as callActions from '../actions/callActions';
 
+export interface ICallState {
+    localStream: MediaStream | null;
+    remoteStream: MediaStream | null;
+    callState: string;
+    callingDialogVisible: boolean;
+    callerUsername: string;
+    callRejected: {
+        rejected: boolean;
+        reason: string;
+    };
+    localCameraEnabled: boolean;
+    localMicrophoneEnabled: boolean;
+    screenSharingActive: boolean;
+}
+
 const initState = {
     localStream: null,
     remoteStream: null,
@@ -15,7 +30,7 @@ const initState = {
     screenSharingActive: false,
 }
 
-const reducer = (state = initState, action: any) => {
+const reducer = (state: ICallState = initState, action: any) => {
     switch (action.type) {
         case callActions.CALL_SET_LOCAL_STREAM:
             return {

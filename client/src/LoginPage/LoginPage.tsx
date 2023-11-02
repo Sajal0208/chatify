@@ -1,4 +1,4 @@
-import React, { Dispatch } from 'react'
+import React, { Dispatch, useEffect } from 'react'
 import { Box, Button, Input, Text } from "@chakra-ui/react";
 import UsernameInput from '../components/UsernameInput';
 import { useNavigate } from 'react-router-dom';
@@ -10,15 +10,29 @@ const LoginPage = ({ saveUsername }:
   { saveUsername: (username: string) => void }
 ) => {
   const [username, setUsername] = React.useState("");
-  const [roomID, setRoomID] = React.useState("");
   const [error, setError] = React.useState("");
   const navigate = useNavigate();
 
   const handleCreate = () => {
+    if(username.length < 3 || username.length === 0) {
+      setError("Username must be at least 3 characters long");
+      return;
+    }
     registerNewUser(username)
     saveUsername(username)
     navigate(`/meeting`);
   }
+
+  useEffect(() => {
+    setError("");
+    if(username.length === 0) {
+      return;
+    }
+    if(username.length < 3) {
+      setError("Username must be at least 3 characters long");
+      return;
+    }
+  }, [username])
 
   return (
     <Box className="bg-black text-white min-h-screen min-w-screen relative">

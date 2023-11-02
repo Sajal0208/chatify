@@ -7,28 +7,16 @@ import IncomingCallDialog from './Dialog/IncomingCallDialog'
 import CallingDialog from './Dialog/CallingDialog'
 import { callStates, setCallRejected, setLocalCameraEnabled, setLocalMicrophoneEnabled } from '../store/actions/callActions'
 import ConversationButtons from './ConversationButtons/ConversationButtons'
+import { ICallState } from '../store/reducers/callReducer'
+import { AppDispatch } from '../store/store'
 
-type TDirectCallProps = {
-    localStream: MediaStream | null
-    remoteStream: MediaStream | null
-    callState: string
-    callerUsername: string
-    callingDialogVisible: boolean
-    callRejected: {
-        rejected: boolean
-        reason: string
-    }
-    localCameraEnabled: boolean
-    localMicrophoneEnabled: boolean
-    screenSharingActive: boolean
-    // callWithVideo: boolean
-    // setCallWithVideo: (callWithVideo: boolean) => void
+interface IDirectCallProps extends ICallState {
     hideCallRejectedDialog: (callRejectedDetails: any) => void
     setCameraEnabled: (enabled: boolean) => void
     setMicrophoneEnabled: (enabled: boolean) => void
 }
 
-const DirectCall = (props: TDirectCallProps) => {
+const DirectCall = (props: IDirectCallProps) => {
     const { localStream, callState, remoteStream, callerUsername, callingDialogVisible, callRejected, hideCallRejectedDialog } = props;
     console.log(callState)
     console.log(callingDialogVisible);
@@ -46,28 +34,14 @@ const DirectCall = (props: TDirectCallProps) => {
 }
 
 function mapStateToProps({ call }: {
-    call: {
-        localStream: MediaStream | null
-        callState: string
-        callerUsername: string
-        callingDialogVisible: boolean
-        callRejected: {
-            rejected: boolean
-            reason: string
-        }
-        remoteStream: MediaStream | null
-        localCameraEnabled: boolean
-        localMicrophoneEnabled: boolean
-        callWithVideo: boolean
-        screenSharingActive: boolean
-    }
+    call: ICallState
 }) {
     return {
         ...call
     }
 }
 
-function mapDispatchToProps(dispatch: any): {
+function mapDispatchToProps(dispatch: AppDispatch): {
     hideCallRejectedDialog: (callRejectedDetails: any) => void
     setCameraEnabled: (enabled: boolean) => void
     setMicrophoneEnabled: (enabled: boolean) => void

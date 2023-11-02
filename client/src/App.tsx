@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import LoginPage from './LoginPage/LoginPage';
 import MeetingPage from './MeetingPage/MeetingPage';
+import LandingPage from './LandingPage/LandingPage';
 
 function App() {
   useEffect(() => {
@@ -16,7 +17,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path = '/' element = {<LoginPage />} />
+        <Route path = '/' element = {<LandingPage />} />
+        <Route path = '/login' element = {<LoginPage />} />
         <Route path = '/meeting' element = {<MeetingPage />}/>
       </Routes>
     </Router>

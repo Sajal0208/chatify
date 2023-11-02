@@ -3,28 +3,18 @@ import { Box } from '@chakra-ui/react'
 import { MdCallEnd, MdMic, MdMicOff, MdVideocam, MdVideocamOff, MdVideoLabel, MdVideoCall, MdCamera } from 'react-icons/md'
 import ConversationButton from './ConversationButton'
 import { hangUp, switchForScreenSharingStream } from '../../utils/webRTC/webRTCHandler'
+import { ICallState } from '../../store/reducers/callReducer'
 
-type TConversationButtonsProps = {
+interface IConversationButtonsProps extends ICallState {
     localStream: MediaStream | null
-    callState: string
-    callerUsername: string
-    callingDialogVisible: boolean
-    callRejected: {
-        rejected: boolean
-        reason: string
-    }
-    remoteStream: MediaStream | null
     localCameraEnabled: boolean
     localMicrophoneEnabled: boolean
     screenSharingActive: boolean
-    // callWithVideo: boolean
-    hideCallRejectedDialog: (callRejectedDetails: any) => void;
     setCameraEnabled: (enabled: boolean) => void
     setMicrophoneEnabled: (enabled: boolean) => void
-    // setCallWithVideo: (callWithVideo: boolean) => void
 }
 
-const ConversationButtons = (props: TConversationButtonsProps) => {
+const ConversationButtons = (props: IConversationButtonsProps) => {
     const { localStream, localCameraEnabled, localMicrophoneEnabled, setCameraEnabled, setMicrophoneEnabled, screenSharingActive } = props;
 
     const onMicButtonClick = () => {
