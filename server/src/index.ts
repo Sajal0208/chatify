@@ -1,14 +1,22 @@
 import cors from "cors";
 import { Request, Response } from "express";
-import type { Socket } from "socket.io";
 import { Server } from "socket.io";
 import express from "express";
 import http from "http";
 import bodyParser from "body-parser";
 import prisma from "./db";
+import { ExpressPeerServer, PeerServerEvents } from "peer";
+import * as groupCallHandler from "./groupcall";
 
 const app = express();
 const server = http.createServer(app);
+export type TPeerServer = express.Express & PeerServerEvents;
+
+const peerServer: TPeerServer = ExpressPeerServer(server, {});
+
+app.use('/peerjs', peerServer);
+
+groupCallHandler.createPeerServerListeners(peerServer);
 
 const io = new Server(server, {
   cors: {
