@@ -11,11 +11,14 @@ datasource db {
 }
 
 model User {
-  id           Int     @id @default(autoincrement())
-  username     String  @unique
-  socketId     String  @unique
+  id       Int    @id @default(autoincrement())
+  username String @unique
+  socketId String @unique
 }
 
 model Room {
-  roomName String @id @unique
+  roomId   String @id @unique
+  socketId String
+  hostName String 
+  peerId   String
 }

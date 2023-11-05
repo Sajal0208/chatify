@@ -1,17 +1,18 @@
-import { AnyAction } from "redux";
 import * as meetingActions from "../actions/meetingActions";
 
-// interface MeetingAction extends AnyAction {
-//   username: string;
-//   activeUsers: User[];
-// }
+export interface IMeetingState {
+  username: string;
+  activeUsers: TUser[];
+  groupCallRooms: TRoom[];
+}
 
 const initState = {
   username: "",
   activeUsers: [],
+  groupCallRooms: [],
 };
 
-const reducer = (state = initState, action: any) => {
+const reducer = (state: IMeetingState = initState, action: any) => {
   switch (action.type) {
     case meetingActions.MEETING_SET_USERNAME:
       return {
@@ -23,6 +24,11 @@ const reducer = (state = initState, action: any) => {
         ...state,
         activeUsers: action.activeUsers,
       };
+    case meetingActions.MEETING_SET_GROUP_CALL_ROOMS:
+      return {
+        ...state,
+        groupCallRooms: action.groupCallRooms,
+      }
     default:
       return state;
   }

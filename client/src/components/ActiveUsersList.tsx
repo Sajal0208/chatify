@@ -2,7 +2,6 @@ import { Box } from '@chakra-ui/react'
 import React from 'react'
 import { connect } from 'react-redux'
 import { callToOtherUser } from '../utils/webRTC/webRTCHandler'
-import { TUser } from '../types/users'
 import { callStates } from '../store/actions/callActions'
 
 const ActiveUsersList = ({ activeUsers, callState }: {

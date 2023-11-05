@@ -10,11 +10,13 @@ import {
   setScreenSharingActive,
 } from "../../store/actions/callActions";
 import store from "../../store/store";
-import { TUser } from "../../types/users";
 import * as wss from "../wssConnection";
 
 const defaultConstrains = {
-  video: true,
+  video: {
+    width: 192,
+    height: 144,
+  },
   audio: true,
 };
 
@@ -99,7 +101,7 @@ export const handlePreOffer = (data: any) => {
     store.dispatch(setCallState(callStates.CALL_REQUESTED));
   } else {
     wss.sendPreOfferAnswer({
-      callSocketId: data.callerSocketId,
+      callerSocketId: data.callerSocketId,
       answer: preOfferAnswers.CALL_NOT_AVAILABLE,
     });
   }

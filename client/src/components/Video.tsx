@@ -8,13 +8,17 @@ const Video = ({ videoStream, className }: VideoProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   
   useEffect(() => {
-    if(videoStream && videoRef.current) {
-      const video = videoRef.current;
-      video!.srcObject = videoStream;
-
-      video.onloadedmetadata = () => {
-        video.play();
+    try {
+      if(videoStream && videoRef.current) {
+        const video = videoRef.current;
+        video!.srcObject = videoStream;
+        
+        video.onloadedmetadata = () => {
+          video.play();
+        }
       }
+    } catch (error) {
+      console.log(error)
     }
   }, [videoStream])
 

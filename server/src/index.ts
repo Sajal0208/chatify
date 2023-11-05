@@ -7,6 +7,8 @@ import bodyParser from "body-parser";
 import prisma from "./db";
 import { ExpressPeerServer, PeerServerEvents } from "peer";
 import * as groupCallHandler from "./groupcall";
+import * as uuid from "uuid";
+import { Room, User } from "@prisma/client";
 
 const app = express();
 const server = http.createServer(app);
@@ -51,7 +53,7 @@ io.on("connection", (socket) => {
         data: {
           username: username,
           socketId: socketId,
-        },
+        } ,
       });
       console.log(newUser);
     } catch (e) {
@@ -61,6 +63,10 @@ io.on("connection", (socket) => {
     io.sockets.emit('broadcast', {
       event: broadcastEventTypes.ACTIVE_USERS,
       activeUsers: await getActiveUsers()
+    })
+    io.sockets.emit('broadcast', {
+      event: broadcastEventTypes.GROUP_CALL_ROOMS,
+      groupCallRooms: await getAllRooms(),
     })
   });
 
@@ -76,6 +82,15 @@ io.on("connection", (socket) => {
     } catch (e) {
       console.log(e);
     }
+
+    const groupCallRooms = await getAllRooms();
+    const newGroupCallRoom = groupCallRooms?.filter((
+      (room:Room) => room.socketId !== socket.id 
+    ))
+    io.sockets.emit('broadcast', {
+      event: broadcastEventTypes.GROUP_CALL_ROOMS,
+      groupCallRooms: newGroupCallRoom
+    })
   })
 
   socket.on('pre-offer', (data) => {
@@ -118,7 +133,75 @@ io.on("connection", (socket) => {
     console.log('handling user hanged up')
     io.to(data.connectedUserSocketId).emit('user-hanged-up')
   })
+
+  // Listeners related to group calls
+  socket.on('group-call-register', async (data) => {
+    const roomId = uuid.v4();
+    socket.join(roomId);
+
+    const newGroupCallRoom = {
+      peerId: data.peerId,
+      hostName: data.username,
+      socketId: socket.id,
+      roomId: roomId
+    }
+
+    const newRoom = await prisma.room.create({
+      data: newGroupCallRoom
+    })
+
+    const groupCallRooms = await getAllRooms();
+    io.sockets.emit('broadcast', {
+      event: broadcastEventTypes.GROUP_CALL_ROOMS,
+      groupCallRooms
+    })
+  })
+
+
+  socket.on('group-call-join-request', (data) => {
+    io.to(data.roomId).emit('group-call-join-request', {
+      peerId: data.peerId,
+      streamId: data.streamId,
+    })
+
+    socket.join(data.roomId)
+  })
+
+  socket.on('group-call-user-left', (data) => {
+    socket.leave(data.roomId)
+    io.to(data.roomId).emit('group-call-user-left', {
+      streamId: data.streamId
+    })
+  })
+
+  socket.on('group-call-closed', async (data) => {
+    try {
+      const deletedRoom = await prisma.room.deleteMany({
+        where: {
+          peerId: data.peerId
+        }
+      })
+
+      const groupCallRooms = await getAllRooms();
+      io.sockets.emit('broadcast', {
+        event: broadcastEventTypes.GROUP_CALL_ROOMS,
+        groupCallRooms
+      })
+    } catch (e) {
+      console.log(e)
+    }
+  })
 });
+
+async function getAllRooms () {
+  try {
+    const rooms = await prisma.room.findMany({})
+    return rooms
+  } catch (e) {
+    console.log(e)
+    return null
+  }
+}
 
 async function getActiveUsers() {
   try {
@@ -166,6 +249,7 @@ app.get("/isUserExists", async (req: Request, res: Response) => {
 server.listen(8080, () => {
   console.log("Chat listening on port 8080");
 });
+
 
 app.listen(8000, () => {
   console.log("Listening on port 8000");
