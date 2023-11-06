@@ -6,6 +6,7 @@ import {
   setCallerUsername,
   setCallingDialogVisible,
   setLocalStream,
+  setMessage,
   setRemoteStream,
   setScreenSharingActive,
 } from "../../store/actions/callActions";
@@ -30,6 +31,7 @@ const configuration = {
 
 let connectedUserSocketId: string | null = null;
 let peerConnection: RTCPeerConnection | null = null;
+let dataChannel: RTCDataChannel | null = null;
 
 const preOfferAnswers = {
   CALL_ACCEPTED: "CALL_ACCEPTED",
@@ -62,6 +64,28 @@ export const createPeerConnection = () => {
 
   peerConnection.ontrack = ({ streams: [stream] }) => {
     store.dispatch(setRemoteStream(stream));
+  };
+
+  // incoming data channel messages
+  peerConnection.ondatachannel = (event) => {
+    const dataChannel = event.channel;
+    dataChannel.onopen = () => {
+      console.log("peer connection is ready to receive data channel messages");
+    };
+
+    dataChannel.onmessage = (event) => {
+      store.dispatch(setMessage({
+        received: true,
+        content: event.data
+      }));
+    }
+  }
+
+
+  dataChannel = peerConnection.createDataChannel("chat");
+
+  dataChannel.onopen = () => {
+    console.log("data channel is opened");
   };
 
   peerConnection.onicecandidate = (event) => {
@@ -267,3 +291,14 @@ export const resetCallData = () => {
   console.log("here I am changin the call state");
   store.dispatch(setCallState(callStates.CALL_AVAILABLE));
 };
+
+export type Message = {
+  received: boolean;
+  content: string;
+}
+
+export const sendMessageUsingDataChannel = (message: string) => {
+  if(dataChannel) {
+    dataChannel.send(message)
+  }
+}

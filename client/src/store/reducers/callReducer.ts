@@ -1,3 +1,4 @@
+import { Message } from '../../utils/webRTC/webRTCHandler';
 import * as callActions from '../actions/callActions';
 
 export interface ICallState {
@@ -15,6 +16,7 @@ export interface ICallState {
     screenSharingActive: boolean;
     groupCallActive: boolean;
     groupCallStreams: MediaStream[];
+    message: Message;
 }
 
 const initState = {
@@ -32,6 +34,10 @@ const initState = {
     screenSharingActive: false,
     groupCallActive: false,
     groupCallStreams: [],
+    message: {
+        received: false,
+        content: '',
+    }
 }
 
 const reducer = (state: ICallState = initState, action: any) => {
@@ -109,6 +115,12 @@ const reducer = (state: ICallState = initState, action: any) => {
                 callState: callActions.callStates.CALL_AVAILABLE,
                 localMicrophoneEnabled: true,
                 localCameraEnabled: true,
+            }
+
+        case callActions.CALL_SET_CHAT_MESSAGE:
+            return {
+                ...state,
+                message: action.message,
             }
 
         default:

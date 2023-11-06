@@ -10,34 +10,34 @@ import * as groupCallHandler from "./groupcall";
 import * as uuid from "uuid";
 import { Room, User } from "@prisma/client";
 
+const PORT = process.env.PORT || 8080;
 const app = express();
-const server = http.createServer(app);
+const server = app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
+})
 export type TPeerServer = express.Express & PeerServerEvents;
-
 const peerServer: TPeerServer = ExpressPeerServer(server, {});
-
-app.use('/peerjs', peerServer);
-
-groupCallHandler.createPeerServerListeners(peerServer);
-
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:3000",
   },
 });
 
+groupCallHandler.createPeerServerListeners(peerServer);
+
+app.use('/peerjs', peerServer);
 const broadcastEventTypes = {
   ACTIVE_USERS: "ACTIVE_USERS",
   GROUP_CALL_ROOMS: "GROUP_CALL_ROOMS",
 }
 
-const allowedOrigins = ["http://localhost:3000"];
-const options: cors.CorsOptions = {
-  origin: allowedOrigins,
-};
+// const allowedOrigins = ["http://localhost:3000"];
+// const options: cors.CorsOptions = {
+//   origin: allowedOrigins,
+// };
 
 // Then pass these options to cors:
-app.use(cors(options));
+app.use(cors());
 app.use(bodyParser.json());
 
 io.on("connection", (socket) => {
@@ -246,11 +246,13 @@ app.get("/isUserExists", async (req: Request, res: Response) => {
   }
 });
 
-server.listen(8080, () => {
-  console.log("Chat listening on port 8080");
-});
 
 
-app.listen(8000, () => {
-  console.log("Listening on port 8000");
-});
+// server.listen(8080, () => {
+//   console.log("Chat listening on port 8080");
+// });
+
+
+// app.listen(8000, () => {
+//   console.log("Listening on port 8000");
+// });

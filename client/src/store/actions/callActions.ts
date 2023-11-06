@@ -1,3 +1,5 @@
+import { Message } from "../../utils/webRTC/webRTCHandler";
+
 export const callStates = {
   CALL_UNAVAILABLE: "CALL_UNAVAILABLE",
   CALL_AVAILABLE: "CALL_AVAILABLE",
@@ -20,6 +22,7 @@ export const CALL_RESET_CALL_DATA = "CALL.RESET_CALL_DATA";
 export const CALL_SET_GROUP_CALL_ACTIVE = "CALL.CALL_SET_GROUP_CALL_ACTIVE";
 export const CALL_SET_GROUP_CALL_STREAMS = "CALL.SET_GROUP_CALL_STREAMS";
 export const CALL_CLEAR_GROUP_CALL_DATA = "CALL.CLEAR_GROUP_CALL_DATA";
+export const CALL_SET_CHAT_MESSAGE = "CALL.SET_CHAT_MESSAGE";
 
 export const setLocalStream = (localStream: MediaStream | null) => {
   return {
@@ -115,5 +118,15 @@ export const setGroupCallIncomingStreams = (groupCallStreams: MediaStream[]) => 
 export const clearGroupCallData = () => {
   return {
     type: CALL_CLEAR_GROUP_CALL_DATA,
+  };
+}
+
+export const setMessage = (message: Message) => {
+  return {
+    type: CALL_SET_CHAT_MESSAGE,
+    message: {
+      received: message.received,
+      content: message.content
+    }
   };
 }
