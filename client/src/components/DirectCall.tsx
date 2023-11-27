@@ -27,7 +27,8 @@ const DirectCall = (props: IDirectCallProps) => {
     return (
         <Box>
             {localStream && <Video videoStream={localStream} />}
-            {remoteStream && callState === callStates.CALL_IN_PROGRESS && <Video videoStream={remoteStream} />}
+            {localStream && <Video videoStream={localStream} />}
+            {/* {remoteStream && callState === callStates.CALL_IN_PROGRESS && <Video videoStream={remoteStream} />} */}
             {callRejected.rejected && <CallRejectedDialog hideCallRejectedDialog={hideCallRejectedDialog} reason={callRejected.reason} />}
             {callState === callStates.CALL_REQUESTED && <IncomingCallDialog callerUsername={callerUsername} />}
             {callingDialogVisible && <CallingDialog />}
