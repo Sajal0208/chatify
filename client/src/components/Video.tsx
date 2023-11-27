@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
+import useDragger from "../hooks/useDragger";
 
 interface VideoProps {
   videoStream: MediaStream;
   className?: string;
+  id: string;
 }
-const Video = ({ videoStream, className }: VideoProps) => {
+const Video = ({ videoStream, className, id }: VideoProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  useDragger(id);
   
   useEffect(() => {
     try {
@@ -27,7 +30,7 @@ const Video = ({ videoStream, className }: VideoProps) => {
   }
 
   return (
-    <video className={className ? className : "rounded-full w-48 h-48"} ref={videoRef} muted width="100%" autoPlay={true} playsInline={true} />
+      <video id = {id} className={className ? className : "rounded-full w-48 h-48 absolute"} ref={videoRef} muted width="100%" autoPlay={true} playsInline={true} />
   )
 }
 

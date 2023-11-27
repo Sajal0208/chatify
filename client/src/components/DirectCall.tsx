@@ -11,6 +11,7 @@ import { ICallState } from '../store/reducers/callReducer'
 import { AppDispatch } from '../store/store'
 import Messanger from './Messanger'
 import { Message } from '../utils/webRTC/webRTCHandler'
+import useDragger from '../hooks/useDragger'
 
 interface IDirectCallProps extends ICallState {
     hideCallRejectedDialog: (callRejectedDetails: any) => void
@@ -23,18 +24,24 @@ const DirectCall = (props: IDirectCallProps) => {
     const { localStream, callState, message, remoteStream, callerUsername, setDirectCallMessage, callingDialogVisible, callRejected, hideCallRejectedDialog } = props;
     console.log(callState)
     console.log(callingDialogVisible);
+    // useDragger('local-video1')
+    // useDragger('local-video2')
+    useDragger('circle')
 
     return (
-        <Box>
-            {localStream && <Video videoStream={localStream} />}
-            {localStream && <Video videoStream={localStream} />}
-            {/* {remoteStream && callState === callStates.CALL_IN_PROGRESS && <Video videoStream={remoteStream} />} */}
-            {callRejected.rejected && <CallRejectedDialog hideCallRejectedDialog={hideCallRejectedDialog} reason={callRejected.reason} />}
-            {callState === callStates.CALL_REQUESTED && <IncomingCallDialog callerUsername={callerUsername} />}
-            {callingDialogVisible && <CallingDialog />}
-            {remoteStream && callState === callStates.CALL_IN_PROGRESS && <ConversationButtons {...props} />}
-            {remoteStream && callState === callStates.CALL_IN_PROGRESS && <Messanger setDirectCallMessage = {setDirectCallMessage} message = {message}  />}
-        </Box>
+        <main className = "grid items-center h-full w-full">
+            <Box className="relative border-solid border-black h-full w-full overflow-hidden">    
+                <div id ="circle" className='absolute top-0 left-0 bg-violet-700 h-24 w-24 rounded cursor-pointer'></div> 
+                {localStream && <Video  id = {"local-video1"} videoStream={localStream} />}
+                {localStream && <Video id = {"local-video2"} videoStream={localStream} />}
+                {/* {remoteStream && callState === callStates.CALL_IN_PROGRESS && <Video videoStream={remoteStream} />} */}
+                {callRejected.rejected && <CallRejectedDialog hideCallRejectedDialog={hideCallRejectedDialog} reason={callRejected.reason} />}
+                {callState === callStates.CALL_REQUESTED && <IncomingCallDialog callerUsername={callerUsername} />}
+                {callingDialogVisible && <CallingDialog />}
+                {remoteStream && callState === callStates.CALL_IN_PROGRESS && <ConversationButtons {...props} />}
+                {remoteStream && callState === callStates.CALL_IN_PROGRESS && <Messanger setDirectCallMessage={setDirectCallMessage} message={message} />}
+            </Box>
+        </main>
     )
 }
 
