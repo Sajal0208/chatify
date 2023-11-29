@@ -19,7 +19,6 @@ const MeetingPage = () => {
       <Box className="basis-3/4 flex flex-col w-full h-full">
         <Box className="border-2 basis-4/5">
           <DirectCall />
-          
           {/* <GroupCall /> */}
         </Box>
         <Box className='border-2  basis-1/5'>

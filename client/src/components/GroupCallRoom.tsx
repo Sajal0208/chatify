@@ -13,7 +13,8 @@ const GroupCallRoom = (props: any) => {
         {
           groupCallStreams && groupCallStreams.map((stream: MediaStream, index: number) => {
             console.log("stream -------------------" + stream)
-            return <Video id = {'group-call'} key={index} videoStream={stream} />
+            // return <Video id = {'group-call'} key={index} videoStream={stream} />
+            return null
           })
         }
       </div>

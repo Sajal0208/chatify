@@ -11,7 +11,6 @@ import { ICallState } from '../store/reducers/callReducer'
 import { AppDispatch } from '../store/store'
 import Messanger from './Messanger'
 import { Message } from '../utils/webRTC/webRTCHandler'
-import useDragger from '../hooks/useDragger'
 
 interface IDirectCallProps extends ICallState {
     hideCallRejectedDialog: (callRejectedDetails: any) => void
@@ -22,18 +21,41 @@ interface IDirectCallProps extends ICallState {
 
 const DirectCall = (props: IDirectCallProps) => {
     const { localStream, callState, message, remoteStream, callerUsername, setDirectCallMessage, callingDialogVisible, callRejected, hideCallRejectedDialog } = props;
-    console.log(callState)
-    console.log(callingDialogVisible);
-    // useDragger('local-video1')
-    // useDragger('local-video2')
-    useDragger('circle')
+    const [localVideo1CSS, setLocalVideo1CSS] = React.useState<string>("border-green-500 w-48 h-48")
+    const [localVideo2CSS, setLocalVideo2CSS] = React.useState<string>("border-red-500 w-48 h-48")
+    const [localVideo1FixedCSS, setLocalVideo1FixedCSS] = React.useState<string>("border-green-500 w-96 h-96")
+    const [localVideo2FixedCSS, setLocalVideo2FixedCSS] = React.useState<string>("border-red-500 w-96 h-96")
+    const [fixedToggle, setFixedToggle] = React.useState<boolean>(false)
+
+    const handleToggle = (id: string) => {
+        setFixedToggle(true);
+        if(id === "local-video1") {
+            setLocalVideo1FixedCSS("border-green-500 w-96 h-96")
+            setLocalVideo2FixedCSS("border-red-500 w-48 h-48")
+        } 
+        
+        if(id === "local-video2") {
+            setLocalVideo2FixedCSS("border-red-500 w-96 h-96")
+            setLocalVideo1FixedCSS("border-green-500 w-48 h-48")
+        }
+    }
 
     return (
         <main className = "grid items-center h-full w-full">
-            <Box className="relative border-solid border-black h-full w-full overflow-hidden">    
-                <div id ="circle" className='absolute top-0 left-0 bg-violet-700 h-24 w-24 rounded cursor-pointer'></div> 
-                {localStream && <Video  id = {"local-video1"} videoStream={localStream} />}
-                {localStream && <Video id = {"local-video2"} videoStream={localStream} />}
+            <Box className="relative h-full w-full overflow-hidden">    
+            {!fixedToggle ? (
+                <React.Fragment>
+                    {localStream && <Video fixed = {false} handleToggle={handleToggle} className = {localVideo1CSS} id = {"local-video1"} videoStream={localStream} />}
+                    {localStream && <Video fixed = {false} handleToggle={handleToggle} className = {localVideo2CSS} id = {"local-video2"} videoStream={localStream} />}
+                </React.Fragment>
+            ): 
+            (
+                <React.Fragment>
+                    {localStream && <Video fixed = {true} handleToggle={handleToggle} className = {localVideo1FixedCSS} id = {"local-video-fixed1"}  videoStream={localStream} />}
+                    {localStream && <Video fixed = {true} handleToggle={handleToggle} className = {localVideo2FixedCSS} id = {"local-video-fixed2"}  videoStream={localStream} />}
+                </React.Fragment>
+            )
+            }
                 {/* {remoteStream && callState === callStates.CALL_IN_PROGRESS && <Video videoStream={remoteStream} />} */}
                 {callRejected.rejected && <CallRejectedDialog hideCallRejectedDialog={hideCallRejectedDialog} reason={callRejected.reason} />}
                 {callState === callStates.CALL_REQUESTED && <IncomingCallDialog callerUsername={callerUsername} />}

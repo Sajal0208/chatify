@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-function useDragger(id: string): void {
-
+function useDragger(id: string, fixed: boolean) {
   const isClicked = useRef<boolean>(false);
 
   const coords = useRef<{
@@ -17,31 +16,30 @@ function useDragger(id: string): void {
   })
 
   useEffect(() => {
-
     const target = document.getElementById(id);
     if (!target) throw new Error("Element with given id doesn't exist");
 
     const container = target.parentElement;
     if (!container) throw new Error("target element must have a parent");
 
-
-
     const onMouseDown = (e: MouseEvent) => {
-        console.log('mousedown for' + id)
+      if(fixed === true) return;
+      console.log('mousedown for' + id)
       isClicked.current = true;
       coords.current.startX = e.clientX;
       coords.current.startY = e.clientY;
     }
 
     const onMouseUp = (e: MouseEvent) => {
+      if(fixed === true) return;
       isClicked.current = false;
       coords.current.lastX = target.offsetLeft;
       coords.current.lastY = target.offsetTop;
     }
 
     const onMouseMove = (e: MouseEvent) => {
+      if(fixed === true) return;
       if (!isClicked.current) return;
-
       const nextX = e.clientX - coords.current.startX + coords.current.lastX;
       const nextY = e.clientY - coords.current.startY + coords.current.lastY;
 

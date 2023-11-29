@@ -5,17 +5,19 @@ interface VideoProps {
   videoStream: MediaStream;
   className?: string;
   id: string;
+  handleToggle: (id: string) => void;
+  fixed: boolean;
 }
-const Video = ({ videoStream, className, id }: VideoProps) => {
+const Video = ({ videoStream, className = "", id, handleToggle, fixed }: VideoProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  useDragger(id);
-  
+  useDragger(id, fixed);
+
   useEffect(() => {
     try {
-      if(videoStream && videoRef.current) {
+      if (videoStream && videoRef.current) {
         const video = videoRef.current;
         video!.srcObject = videoStream;
-        
+
         video.onloadedmetadata = () => {
           video.play();
         }
@@ -25,12 +27,22 @@ const Video = ({ videoStream, className, id }: VideoProps) => {
     }
   }, [videoStream])
 
-  if(!videoStream) {
+  if (!videoStream) {
     return null;
   }
 
+  const existingClassName = "border-2 object-cover cursor-pointer transition rounded-full border-solid absolute"
+
+  const handleClick = (e: any) => {
+    if (e.detail === 2) {
+      console.log("double click")
+      if(!id) return;
+      handleToggle(id);
+    }
+  }
+
   return (
-      <video id = {id} className={className ? className : "rounded-full w-48 h-48 absolute"} ref={videoRef} muted width="100%" autoPlay={true} playsInline={true} />
+    <video onClick={handleClick} id={id} className={existingClassName + " " + className} ref={videoRef} muted width="100%" autoPlay={true} playsInline={true} />
   )
 }
 
