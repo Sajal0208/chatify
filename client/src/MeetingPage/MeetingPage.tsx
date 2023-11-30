@@ -8,10 +8,12 @@ import GroupCallRoomsList from '../components/GroupCallRoomsList'
 import GroupCall from '../components/GroupCall'
 
 const MeetingPage = () => {
-
   useEffect(() => {
     webRTCHandler.getLocalStream()
-    webRTCHandlergroupCallHandler.connectWithMyPeer()
+
+    return () => {
+      webRTCHandler.resetCallData()
+    }
   }, []);
 
   return (

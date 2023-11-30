@@ -5,6 +5,16 @@ import ConversationButton from './ConversationButton'
 import { hangUp, switchForScreenSharingStream } from '../../utils/webRTC/webRTCHandler'
 import { ICallState } from '../../store/reducers/callReducer'
 
+interface IConversationButtonsProps extends ICallState {
+    localStream: MediaStream | null
+    localCameraEnabled: boolean
+    localMicrophoneEnabled: boolean
+    setCameraEnabled: (enabled: boolean) => void
+    setMicrophoneEnabled: (enabled: boolean) => void
+    screenSharingActive: boolean
+    groupCall: boolean
+}
+
 const ConversationButtons = (props: any) => {
     const { localStream, localCameraEnabled, localMicrophoneEnabled, setCameraEnabled, setMicrophoneEnabled, screenSharingActive,
     groupCall } = props;
@@ -32,20 +42,20 @@ const ConversationButtons = (props: any) => {
     }
 
     return (
-        <Box>
-            <ConversationButton onClickHandler={onMicButtonClick}>
+        <>
+            <ConversationButton id = {'mic-off-button'} onClickHandler={onMicButtonClick}>
                 {localMicrophoneEnabled ? <MdMic className='text-white w-6 h-6' /> : <MdMicOff className='text-white w-6 h-6' />}
             </ConversationButton>
-            {!groupCall && <ConversationButton onClickHandler={onHangUpButtonClick}>
+            {!groupCall && <ConversationButton id = {'hang-up-button'} onClickHandler={onHangUpButtonClick}>
                 <MdCallEnd className='text-red-500 w-6 h-6' />
             </ConversationButton>}
-            <ConversationButton onClickHandler={onCameraButtonClick}>
+            <ConversationButton id = {'toggle-camera-button'} onClickHandler={onCameraButtonClick}>
                 {localCameraEnabled ? <MdVideocam className='text-white w-6 h-6' /> : <MdVideocamOff className='text-white w-6 h-6' />}
             </ConversationButton>
-            {!groupCall && <ConversationButton onClickHandler={onScreenShareButtonClick} >
+            {!groupCall && <ConversationButton id = {'share-screen-button'} onClickHandler={onScreenShareButtonClick} >
                 {screenSharingActive ? <MdCamera className='text-white w-6 h-6' /> : <MdVideoLabel className='text-white w-6 h-6' />}
             </ConversationButton>}
-        </Box>
+        </>
     )
 }
 

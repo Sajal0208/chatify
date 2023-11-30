@@ -3,12 +3,15 @@ import useDragger from "../hooks/useDragger";
 
 interface VideoProps {
   videoStream: MediaStream;
-  className?: string;
+  borderColor: string;
   id: string;
+  className?: string;
   handleToggle: (id: string) => void;
   fixed: boolean;
+  videoHeight?: number;
+  videoWidth?: number;
 }
-const Video = ({ videoStream, className = "", id, handleToggle, fixed }: VideoProps) => {
+const Video = ({ videoStream, videoHeight, videoWidth, className, borderColor, id, handleToggle, fixed }: VideoProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   useDragger(id, fixed);
 
@@ -31,7 +34,7 @@ const Video = ({ videoStream, className = "", id, handleToggle, fixed }: VideoPr
     return null;
   }
 
-  const existingClassName = "border-2 object-cover cursor-pointer transition rounded-full border-solid absolute"
+  const existingClassName = `border-2 object-cover cursor-pointer transition rounded-full border-solid absolute border-${borderColor}-500 w-${videoWidth} h-${videoHeight}`;
 
   const handleClick = (e: any) => {
     if (e.detail === 2) {
@@ -42,7 +45,7 @@ const Video = ({ videoStream, className = "", id, handleToggle, fixed }: VideoPr
   }
 
   return (
-    <video onClick={handleClick} id={id} className={existingClassName + " " + className} ref={videoRef} muted width="100%" autoPlay={true} playsInline={true} />
+    <video onClick={handleClick} id={id} className={className ? className : existingClassName} ref={videoRef} muted width="100%" autoPlay={true} playsInline={true} />
   )
 }
 

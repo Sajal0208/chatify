@@ -17,7 +17,7 @@ const CallRejectedDialog = ({reason, hideCallRejectedDialog}: {
     }, 4000)  
   }, [hideCallRejectedDialog]);
   return (
-    <Box className = "call_rejected_dialog ">
+    <Box className = "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2 rounded-xl  border-2 flex flex-col justify-center items-center">
         {reason}
     </Box>
   )
