@@ -245,14 +245,3 @@ app.get("/isUserExists", async (req: Request, res: Response) => {
     });
   }
 });
-
-
-
-// server.listen(8080, () => {
-//   console.log("Chat listening on port 8080");
-// });
-
-
-// app.listen(8000, () => {
-//   console.log("Listening on port 8000");
-// });
