@@ -1,6 +1,4 @@
 import { Box } from '@chakra-ui/react'
-import React from 'react'
-import './CallingDialog.css'
 import { hangUp } from '../../utils/webRTC/webRTCHandler'
 import { MdCallEnd } from 'react-icons/md'
 

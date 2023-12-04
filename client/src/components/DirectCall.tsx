@@ -1,4 +1,3 @@
-import React from 'react'
 import { connect } from 'react-redux'
 import Video from './Video'
 import { Box } from '@chakra-ui/react'
@@ -29,8 +28,14 @@ const DirectCall = (props: IDirectCallProps) => {
     return (
         <main className="grid items-center h-full w-full">
             <Box className="relative h-full w-full overflow-hidden">
-                {localStream && <Video fixed={false} handleToggle={handleToggle} borderColor={"green"} id={"local-video"} videoHeight={48} videoWidth={48} videoStream={localStream} />}
-                {remoteStream && callState === callStates.CALL_IN_PROGRESS && <Video fixed = {false} handleToggle={handleToggle} borderColor={"red"} id={"remote-video"}  videoHeight={48} videoWidth={48}  videoStream={remoteStream} />}
+                {localStream && <Video fixed={false} defaultPosition={{
+                    top: 10,
+                }} handleToggle={handleToggle} borderColor={"green"} id={"local-video"} videoHeight={72} videoWidth={72} videoStream={localStream} />}
+                {remoteStream && callState === callStates.CALL_IN_PROGRESS && <Video 
+                defaultPosition={{
+                    right: 10,
+                }}
+                fixed = {false} handleToggle={handleToggle} borderColor={"red"} id={"remote-video"}  videoHeight={48} videoWidth={48}  videoStream={remoteStream} />}
                 {callRejected.rejected && <CallRejectedDialog hideCallRejectedDialog={hideCallRejectedDialog} reason={callRejected.reason} />}
                 {callState === callStates.CALL_REQUESTED && <IncomingCallDialog callerUsername={callerUsername} />}
                 {callingDialogVisible && <CallingDialog />}

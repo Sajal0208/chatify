@@ -19,6 +19,6 @@ model User {
 model Room {
   roomId   String @id @unique
   socketId String
-  hostName String 
+  hostName String
   peerId   String
 }

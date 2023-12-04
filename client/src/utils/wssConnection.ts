@@ -4,7 +4,7 @@ import * as meetingActions from "../store/actions/meetingActions";
 import * as webRtcHandler from "./webRTC/webRTCHandler";
 import * as webRTCGroupCallHandler from "./webRTC/webRTCGroupCallHandler";
 
-const SERVER = "http://localhost:8080";
+const SERVER = `${process.env.REACT_APP_BASE_URL}`;
 const broadcastEventTypes = {
   ACTIVE_USERS: "ACTIVE_USERS",
   GROUP_CALL_ROOMS: "GROUP_CALL_ROOMS",

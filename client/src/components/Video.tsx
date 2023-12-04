@@ -1,19 +1,54 @@
 import React, { useState, useEffect, useRef } from "react";
 import useDragger from "../hooks/useDragger";
+import { Box } from "@chakra-ui/react";
 
 interface VideoProps {
   videoStream: MediaStream;
   borderColor: string;
   id: string;
-  className?: string;
   handleToggle: (id: string) => void;
   fixed: boolean;
   videoHeight?: number;
   videoWidth?: number;
+  defaultPosition: { top?: number; left?: number; bottom?: number; right?: number };
 }
-const Video = ({ videoStream, videoHeight, videoWidth, className, borderColor, id, handleToggle, fixed }: VideoProps) => {
+const Video = ({ videoStream, videoHeight, videoWidth, borderColor, id, handleToggle, fixed, defaultPosition }: VideoProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   useDragger(id, fixed);
+  const [positionClassname, setPositionClassname] = useState<string>(() => {
+    let classname = ''
+    if(defaultPosition.hasOwnProperty('top')) {
+      classname = classname + ' top-' + defaultPosition.top
+    }
+    if(defaultPosition.hasOwnProperty('left')) {
+      classname = classname + ' left-' + defaultPosition.left
+    }
+    if(defaultPosition.hasOwnProperty('bottom')) {
+      classname = classname + ' bottom-' + defaultPosition.bottom
+    }
+    if(defaultPosition.hasOwnProperty('right')) {
+      classname = classname + ' right-' + defaultPosition.right
+    }
+    console.log(classname)
+    return classname
+  })
+
+  const getPositionClassname = () => {
+    let classname = ''
+    if(defaultPosition.hasOwnProperty('top')) {
+      classname = classname + ' top-' + defaultPosition.top
+    }
+    if(defaultPosition.hasOwnProperty('left')) {
+      classname = classname + ' left-' + defaultPosition.left
+    }
+    if(defaultPosition.hasOwnProperty('bottom')) {
+      classname = classname + ' bottom-' + defaultPosition.bottom
+    }
+    if(defaultPosition.hasOwnProperty('right')) {
+      classname = classname + ' right-' + defaultPosition.right
+    }
+    return classname
+  }
 
   useEffect(() => {
     try {
@@ -30,22 +65,21 @@ const Video = ({ videoStream, videoHeight, videoWidth, className, borderColor, i
     }
   }, [videoStream])
 
+
   if (!videoStream) {
     return null;
   }
 
-  const existingClassName = `border-2 object-cover cursor-pointer transition rounded-full border-solid absolute border-${borderColor}-500 w-${videoWidth} h-${videoHeight}`;
-
   const handleClick = (e: any) => {
     if (e.detail === 2) {
       console.log("double click")
-      if(!id) return;
+      if (!id) return;
       handleToggle(id);
     }
   }
 
   return (
-    <video onClick={handleClick} id={id} className={className ? className : existingClassName} ref={videoRef} muted width="100%" autoPlay={true} playsInline={true} />
+    <video onClick={handleClick} id={id} className={`border-2 object-cover cursor-pointer transition rounded-full border-solid absolute border-${borderColor}-500 w-${videoWidth} h-${videoHeight} ${positionClassname}`} ref={videoRef}  muted autoPlay={true} playsInline={true} />
   )
 }
 

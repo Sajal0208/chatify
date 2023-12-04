@@ -1,0 +1,44 @@
+version: "3"
+
+services:
+  # postgresdb: 
+  #   image: postgres
+  #   container_name: chatify-postgresdb
+  #   environment:
+  #     - POSTGRES_PASSWORD=secret
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_DB=chatify
+  #   ports:
+  #     - 5432:5432
+  #   networks:
+  #     - chatify-network
+
+  chatify-node-api: 
+    container_name: chatify-api
+    build: ./server
+    ports: 
+      - 8080:8080
+    environment:
+      - DATABASE_URL=postgresql://postgres:secret@localhost:5432/chatify
+    networks:
+      - chatify-network
+
+  client: 
+    container_name: chatify-react
+    build: ./client
+    ports:
+      - 3000:3000
+    environment:
+      - REACT_APP_BASE_URL=http://localhost:8080
+    depends_on:
+      - chatify-node-api
+    stdin_open: true
+    tty: true
+    networks:
+      - chatify-network
+
+networks:
+  chatify-network:
+    driver: bridge
+
+    

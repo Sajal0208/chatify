@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react'
+import { Box, Button } from '@chakra-ui/react'
 import React, { useEffect } from 'react'
 import ActiveUsersList from '../components/ActiveUsersList'
 import * as webRTCHandler from '../utils/webRTC/webRTCHandler'
@@ -16,6 +16,10 @@ const MeetingPage = () => {
     }
   }, []);
 
+  const resetConnectionButton = () => {
+    webRTCHandler.resetCallData()
+  }
+
   return (
     <Box className="bg-black text-white w-screen h-screen flex flex-row">
       <Box className="basis-3/4 flex flex-col w-full h-full">
@@ -24,7 +28,7 @@ const MeetingPage = () => {
           {/* <GroupCall /> */}
         </Box>
         <Box className='border-2  basis-1/5'>
-          {/* <GroupCallRoomsList /> */}
+          <Button onClick = {resetConnectionButton}>Reset Connection</Button>
         </Box>
       </Box>
       <Box className='basis-1/4 flex flex-col w-full h-full'>

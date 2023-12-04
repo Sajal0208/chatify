@@ -1,6 +1,5 @@
 import { Box } from '@chakra-ui/react'
 import React, { useEffect } from 'react'
-import './CallRejectedDialog.css'
 
 const CallRejectedDialog = ({reason, hideCallRejectedDialog}: {
   reason: string
