@@ -79,7 +79,7 @@ const Video = ({ videoStream, videoHeight, videoWidth, borderColor, id, handleTo
   }
 
   return (
-    <video onClick={handleClick} id={id} className={`border-2 object-cover cursor-pointer transition rounded-full border-solid absolute border-${borderColor}-500 w-${videoWidth} h-${videoHeight} ${positionClassname}`} ref={videoRef}  muted autoPlay={true} playsInline={true} />
+    <video onClick={handleClick} id={id} className={`border-2 object-cover cursor-pointer transition rounded-full border-solid absolute border-${borderColor}-500 ${positionClassname}`} ref={videoRef}  muted autoPlay={true} playsInline={true} />
   )
 }
 

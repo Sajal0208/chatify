@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react"
 import { Message, sendMessageUsingDataChannel } from "../utils/webRTC/webRTCHandler"
 import MessageDisplayer from "./MessageDisplayer"
+import useDragger from "../hooks/useDragger"
+import { Box, Input } from "@chakra-ui/react"
 
 type MessangerProps = {
     message: Message
@@ -9,7 +11,8 @@ type MessangerProps = {
 
 const Messanger = ({ message, setDirectCallMessage }: MessangerProps) => {
     const [input, setInput] = useState('')
-
+    useDragger('messanger-input', false)
+    useDragger('message-displayer', false)
     const handleOnKeyDownEvent = (e: any) => {
         if (e.keyCode === 13) {
             sendMessageUsingDataChannel(input)
@@ -27,15 +30,19 @@ const Messanger = ({ message, setDirectCallMessage }: MessangerProps) => {
 
     return (
         <>
-            <input
-                type='text'
-                value={input}
-                className="text-black"
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleOnKeyDownEvent}
-                placeholder="Type your message"
-            />
-            {message.received && <MessageDisplayer message={message.content} />}
+            <Box className = {'absolute bottom-12 h-12 left-1/2 -translate-x-1/2'} id = {'messanger-input'}>
+                <Input
+                    type='text'
+                    value={input}
+                    className="text-white cursor-pointer h-12"
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={handleOnKeyDownEvent}
+                    placeholder="Type your message"
+                />
+            </Box>
+            <Box id = {'message-displayer'}>
+                {message.received && <MessageDisplayer message={message.content} />}
+            </Box>
         </>
     )
 }

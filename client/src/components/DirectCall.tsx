@@ -29,18 +29,22 @@ const DirectCall = (props: IDirectCallProps) => {
         <main className="grid items-center h-full w-full">
             <Box className="relative h-full w-full overflow-hidden">
                 {localStream && <Video fixed={false} defaultPosition={{
-                    top: 10,
-                }} handleToggle={handleToggle} borderColor={"green"} id={"local-video"} videoHeight={72} videoWidth={72} videoStream={localStream} />}
+                    left: 10,
+                }} handleToggle={handleToggle} borderColor={"green"} id={"local-video"} videoHeight={48} videoWidth={48} videoStream={localStream} />}
                 {remoteStream && callState === callStates.CALL_IN_PROGRESS && <Video 
                 defaultPosition={{
                     right: 10,
                 }}
                 fixed = {false} handleToggle={handleToggle} borderColor={"red"} id={"remote-video"}  videoHeight={48} videoWidth={48}  videoStream={remoteStream} />}
+                {/* {remoteStream && callState === callStates.CALL_IN_PROGRESS &&  */}
+                <ConversationButtons {...props} />
+                {/* }  */}
                 {callRejected.rejected && <CallRejectedDialog hideCallRejectedDialog={hideCallRejectedDialog} reason={callRejected.reason} />}
                 {callState === callStates.CALL_REQUESTED && <IncomingCallDialog callerUsername={callerUsername} />}
                 {callingDialogVisible && <CallingDialog />}
-                {remoteStream && callState === callStates.CALL_IN_PROGRESS && <ConversationButtons {...props} />}
-                {remoteStream && callState === callStates.CALL_IN_PROGRESS && <Messanger setDirectCallMessage={setDirectCallMessage} message={message} />}
+                {/* {remoteStream && callState === callStates.CALL_IN_PROGRESS &&  */}
+                <Messanger setDirectCallMessage={setDirectCallMessage} message={message} />
+                {/* // } */}
             </Box>
         </main>
     )
