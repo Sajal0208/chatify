@@ -4,7 +4,7 @@ import useDragger from '../hooks/useDragger'
 
 const MessageDisplayer = (props: any) => {
   return (
-    <Box>
+    <Box className = "absolute bottom-10 left-10 cursor-pointer border rounded-xl border-solid border-white w-min p-2">
         {props.message}
     </Box>
   )

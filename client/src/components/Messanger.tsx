@@ -38,9 +38,7 @@ const Messanger = ({ message, setDirectCallMessage }: MessangerProps) => {
                     placeholder="Type your message"
                 />
             </Box>
-            <Box>
-                {message.received && <MessageDisplayer message={message.content} />}
-            </Box>
+            {message.received && <MessageDisplayer message={message.content} />}
         </>
     )
 }

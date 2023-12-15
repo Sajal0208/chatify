@@ -16,10 +16,6 @@ const MeetingPage = () => {
     }
   }, []);
 
-  const resetConnectionButton = () => {
-    webRTCHandler.resetCallData()
-  }
-
   return (
     <Box className="bg-black text-white w-screen h-screen flex flex-row">
       <Box className="basis-3/4 flex flex-col w-full h-full">
