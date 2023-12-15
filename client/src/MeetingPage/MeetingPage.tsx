@@ -33,7 +33,7 @@ const MeetingPage = () => {
           <ActiveUsersList />
         </Box>
         <Box className='border-2 basis-1/5'>
-          logo
+          <img className='w-40' src = {'/chatify-logo-vertical.png'} />
         </Box>
       </Box>
     </Box>
