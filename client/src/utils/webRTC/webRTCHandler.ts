@@ -18,7 +18,7 @@ const defaultConstrains = {
     width: 192,
     height: 144,
   },
-  audio: false,
+  audio: true,
 };
 
 const configuration = {
