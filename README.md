@@ -110,3 +110,28 @@ In the root directory,
 ```bash
   docker compose up -d
 ```
+
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+Client Side: 
+
+```bash 
+    cd /chatify/client
+    mkdir .env
+```
+`REACT_APP_BASE_URL = "http://localhost:8080"`
+
+Server Side: 
+```bash 
+    cd /chatify/server
+    mkdir .env
+```
+`POSTGRES_PASSWORD="secret"`
+
+`POSTGRES_USER="postgres"`
+
+`POSTGRES_DB="chatify"`
+
+`DATABASE_URL="postgresql://postgres:secret@localhost:5432/chatify?schema=public"`
