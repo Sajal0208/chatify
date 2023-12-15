@@ -19,7 +19,6 @@ interface IConversationButtonsProps extends ICallState {
 const ConversationButtons = (props: any) => {
     const { localStream, localCameraEnabled, localMicrophoneEnabled, setCameraEnabled, setMicrophoneEnabled, screenSharingActive,
     groupCall } = props;
-    useDragger('btn', false);
     const onMicButtonClick = () => {
         if (!localStream) return;
         const micEnabled = localMicrophoneEnabled;
@@ -43,7 +42,7 @@ const ConversationButtons = (props: any) => {
     }
 
     return (
-        <Box id = {'btn'}className = {'cursor-pointer border-2 border-solid border-gray-400 rounded-lg h-14 absolute bottom-0 left-1/2 -translate-x-1/2 flex flex-row justify-center gap-x-4'}>
+        <Box className = {'cursor-pointer border-2 border-solid border-gray-400 rounded-lg h-14 absolute bottom-0 left-1/2 -translate-x-1/2 flex flex-row justify-center gap-x-4'}>
             <ConversationButton  onClickHandler={onMicButtonClick}>
                 {localMicrophoneEnabled ? <MdMic className='text-white w-6 h-6' /> : <MdMicOff className='text-white w-6 h-6' />}
             </ConversationButton>

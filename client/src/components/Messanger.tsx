@@ -11,8 +11,6 @@ type MessangerProps = {
 
 const Messanger = ({ message, setDirectCallMessage }: MessangerProps) => {
     const [input, setInput] = useState('')
-    useDragger('messanger-input', false)
-    useDragger('message-displayer', false)
     const handleOnKeyDownEvent = (e: any) => {
         if (e.keyCode === 13) {
             sendMessageUsingDataChannel(input)
@@ -30,7 +28,7 @@ const Messanger = ({ message, setDirectCallMessage }: MessangerProps) => {
 
     return (
         <>
-            <Box className = {'absolute bottom-12 h-12 left-1/2 -translate-x-1/2'} id = {'messanger-input'}>
+            <Box className = {'absolute bottom-12 h-12 left-1/2 -translate-x-1/2'}>
                 <Input
                     type='text'
                     value={input}
@@ -40,7 +38,7 @@ const Messanger = ({ message, setDirectCallMessage }: MessangerProps) => {
                     placeholder="Type your message"
                 />
             </Box>
-            <Box id = {'message-displayer'}>
+            <Box>
                 {message.received && <MessageDisplayer message={message.content} />}
             </Box>
         </>
