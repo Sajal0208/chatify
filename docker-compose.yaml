@@ -19,7 +19,7 @@ services:
     ports: 
       - 8080:8080
     environment:
-      - DATABASE_URL=postgresql://postgres:secret@localhost:5432/chatify
+      - DATABASE_URL=postgresql://postgres:secret@host.docker.internal/chatify
     networks:
       - chatify-network
 
