@@ -123,7 +123,7 @@ Client Side:
 ```
 `REACT_APP_BASE_URL = "http://localhost:8080"`
 
-Server Side: 
+Server Side
 ```bash 
     cd /chatify/server
     mkdir .env
